@@ -1,6 +1,6 @@
 # DeepSeek-OCR for Apple Silicon (CPU)
 
-Simple setup guide for testing DeepSeek-OCR on Apple Silicon Macs using CPU inference.
+Setup guide for testing DeepSeek-OCR on Apple Silicon Macs using CPU inference.
 
 ## Prerequisites
 
@@ -67,6 +67,8 @@ Then patch for CPU compatibility:
 python patch-for-cpu.py
 ```
 
+Then run `python run-ocr.py` again. See below for details on the optional parameters.
+
 ## Usage
 
 ### Basic OCR
@@ -94,7 +96,8 @@ result = model.infer(
     base_size=1024,    # See resolution modes below
     image_size=640,
     crop_mode=True,
-    save_results=True
+    save_results=True,
+    test_compress=True  # Optional: enables compression ratio analysis
 )
 ```
 
@@ -102,6 +105,39 @@ result = model.infer(
 - `output/result.md` - Extracted text in markdown format
 - `output/result_with_boxes.jpg` - Image with bounding boxes
 - `output/images/` - Cropped regions (if applicable)
+
+### Performance Metrics
+When `test_compress=True`, the script displays detailed performance metrics:
+- **Processing time** - Total time taken for OCR
+- **Vision tokens** - Number of tokens used to encode the image
+- **Text tokens generated** - Number of tokens in the output text
+- **Compression ratio** - Text tokens / Vision tokens (higher = more compression)
+- **Expected accuracy** - Estimated accuracy based on compression ratio:
+  - < 10×: ~97% accuracy
+  - 10-12×: ~90-97% accuracy
+  - 12-15×: ~85-90% accuracy
+  - 15-20×: ~60-85% accuracy
+  - > 20×: ~60% or less accuracy (high compression)
+
+## Customizing the Script
+
+The provided `run-ocr.py` script has several configurable parameters. Edit the following lines to customize:
+
+### Input/Output Settings
+```python
+image_file = "dutch.jpg"       # Change to your image file path
+output_path = "output/"        # Change output directory
+prompt = "<image>\n<|grounding|>Convert the document to markdown."  # Change prompt
+```
+
+### Resolution Settings
+```python
+base_size = 1024      # Image base resolution (512, 640, 1024, 1280)
+image_size = 640      # Processing resolution
+crop_mode = True      # Enable/disable Gundam mode (dynamic cropping)
+```
+
+See "Resolution Modes" below for recommended configurations.
 
 ## Resolution Modes
 
