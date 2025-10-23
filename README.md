@@ -26,9 +26,9 @@ conda --version
 # 1. Setup environment
 conda create -n deepseek-ocr python=3.12 -y
 conda activate deepseek-ocr
-pip install transformers==4.46.3 tokenizers==0.20.3 torch torchvision Pillow einops
+pip install transformers==4.46.3 tokenizers==0.20.3 torch torchvision Pillow einops addict easydict
 
-# 2. Run once to download model (~17GB)
+# 2. Run once to download model (~7GB)
 python run-ocr.py  # Will take a few minutes
 
 # 3. Patch for CPU compatibility (run once)
@@ -41,33 +41,6 @@ python run-ocr.py
 Check `output/result.md` for extracted text.
 
 ---
-
-## Installation
-
-### 1. Create conda environment
-```bash
-conda create -n deepseek-ocr python=3.12 -y
-conda activate deepseek-ocr
-```
-
-### 2. Install dependencies
-```bash
-pip install transformers==4.46.3 tokenizers==0.20.3 torch torchvision Pillow einops
-```
-
-### 3. Download and patch the model
-
-First run will download the model (~17GB):
-```bash
-python run-ocr.py
-```
-
-Then patch for CPU compatibility:
-```bash
-python patch-for-cpu.py
-```
-
-Then run `python run-ocr.py` again. See below for details on the optional parameters.
 
 ## Usage
 
@@ -177,9 +150,9 @@ Choose based on your image size and quality needs:
 ## Performance Notes
 
 - **CPU mode**: Slower but reliable on Apple Silicon
-- **Processing time**: ~1-2 minutes per page (e.g. 30 sec. for 3551×4686 jpeg on M4 with 24GB, Gundam mode)
-- **Memory**: Requires ~8-16GB RAM depending on resolution mode
-- **MPS (Apple GPU)**: Currently not recommended due to output quality issues
+- **Processing time**: ~30 seconds to 2 minutes per page depending on size and complexity (e.g., 25 sec for 1776×2343 image, 30 sec for 3551×4686 on M4, Gundam mode). First run is slower as the model loads into RAM; subsequent runs are faster.
+- **Memory**: 10GB minimum, 12-16GB recommended (model + activations + system overhead). Memory usage varies by resolution mode (see Resolution Modes above).
+- **MPS (Apple GPU)**: Currently not implemented due to output quality issues
 
 ## Supported Image Formats
 
@@ -187,23 +160,11 @@ Choose based on your image size and quality needs:
 - `.png` - Images
 - `.pdf` - Use the vLLM scripts in `DeepSeek-OCR-master/DeepSeek-OCR-vllm/`
 
-## Example
-
-```bash
-# Using the provided script
-python run-ocr.py
-```
-
-Check `output/` directory for results.
-
 ## Troubleshooting
 
 **Model not found error**: Run `run-ocr.py` once to download the model before patching.
-
 **Out of memory**: Try a smaller resolution mode (Tiny or Small).
-
 **Poor quality output**: Use Base or Gundam mode for better results.
-
 **Repetitive text**: Model not patched correctly, re-run `patch-for-cpu.py`.
 
 ## Credits
