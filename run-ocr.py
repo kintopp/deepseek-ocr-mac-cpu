@@ -25,7 +25,7 @@ model = AutoModel.from_pretrained(
 model = model.eval().to(torch.float32).to("cpu")
 
 prompt = "<image>\n<|grounding|>Convert the document to markdown."
-image_file = "dutch.jpg"
+image_file = "image.jpg"
 output_path = "output/"
 
 # Resolution modes (see README.md for details):

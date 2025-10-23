@@ -125,7 +125,7 @@ The provided `run-ocr.py` script has several configurable parameters. Edit the f
 
 ### Input/Output Settings
 ```python
-image_file = "dutch.jpg"       # Change to your image file path
+image_file = "image.jpg"       # Change to your image file path
 output_path = "output/"        # Change output directory
 prompt = "<image>\n<|grounding|>Convert the document to markdown."  # Change prompt
 ```
