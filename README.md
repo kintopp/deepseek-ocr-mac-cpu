@@ -1,6 +1,6 @@
 # DeepSeek-OCR for Apple Silicon (CPU)
 
-Setup guide for testing DeepSeek-OCR on Apple Silicon Macs using CPU inference.
+Setup guide for testing DeepSeek-OCR on Apple Silicon Macs using CPU inference with single image files.
 
 ## Prerequisites
 
@@ -37,10 +37,6 @@ python patch-for-cpu.py
 # 4. Run OCR (now works correctly)
 python run-ocr.py
 ```
-
-Check `output/result.md` for extracted text.
-
----
 
 ## Usage
 
@@ -98,7 +94,7 @@ The provided `run-ocr.py` script has several configurable parameters. Edit the f
 
 ### Input/Output Settings
 ```python
-image_file = "image.jpg"       # Change to your image file path
+image_file = "image.jpg"       # Change to your image (jpg/jpeg/png) file path
 output_path = "output/"        # Change output directory
 prompt = "<image>\n<|grounding|>Convert the document to markdown."  # Change prompt
 ```
@@ -158,7 +154,6 @@ Choose based on your image size and quality needs:
 
 - `.jpg`, `.jpeg` - Images (recommended)
 - `.png` - Images
-- `.pdf` - Use the vLLM scripts in `DeepSeek-OCR-master/DeepSeek-OCR-vllm/`
 
 ## Troubleshooting
 
